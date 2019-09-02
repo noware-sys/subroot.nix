@@ -1,0 +1,1 @@
+Modifications to nixpkgs to allow/enable/ease mounting root / and /boot from a subdirectory on their partition(s)
