@@ -16,7 +16,7 @@
 		type = lib.types.string;
 		default = "";
 		example = "/mach/nixos";
-		description = ''Absolute directory path relative to the root volume/partition to mount as the actual root / for the resulting running system. Also look at subboot.*. This is useful if, for example, the root filesystem of the OS is present in a subdirectory on its volume/partition.'';
+		description = ''Absolute directory path, relative to the root volume/partition, to mount as the actual root / for the resulting running system. Also look at subboot.*. This is useful if, for example, the root filesystem of the OS is present in a subdirectory on its volume/partition.'';
 	};
 	
 	#options.boot.loader.subroot.boot = mkOption
@@ -36,7 +36,7 @@
 		type = lib.types.bool;
 		default = false;
 		example = true;
-		description = ''Whether to mount subboot.path as /boot on the resulting running system. This is useful if /boot is present on another volume/partition than root /.'';
+		description = ''Whether to mount subboot.path as /boot (actually, as subboot.mnt.dest) on the resulting running system. This is useful if /boot is present on another volume/partition than root /.'';
 	};
 	
 	options.subboot.mnt.src = lib.mkOption

@@ -178,7 +178,10 @@
 		#nano
 		#stress
 		#networkmanagerapplet
+		
+		# for making available an on-screen keyboard when logging in via the display manager
 		onboard
+		
 		#nix-prefetch-scripts
 		#nix-index
 		#ntfs3g

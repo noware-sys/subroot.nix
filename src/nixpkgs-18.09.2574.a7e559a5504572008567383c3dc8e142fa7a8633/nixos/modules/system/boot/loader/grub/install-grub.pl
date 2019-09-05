@@ -686,8 +686,16 @@ sub addProfile {
             warn "skipping corrupt system profile entry ‘$link’\n";
             next;
         }
+        # original:
         #my $date = strftime("%F", localtime(lstat($link)->mtime));
-        my $date = strftime("%Y-%m-%d %H:%M:%S %z %a", gmtime(lstat($link)->mtime));
+        #
+        #my $date = strftime("%Y-%m-%d %H:%M:%S %z %a", localtime(lstat($link)->mtime));
+        #my $date = strftime("%Y-%m-%d %H:%M:%S %z %a", gmtime(lstat($link)->mtime));
+	      #
+	      # the timezone returned for gmtime is the same as the localtime's (bug?)
+	      # (strftime("%z", localtime(...)) == strftime("%z", gmtime(...))):
+	      # so, manually set it to +0000
+        my $date = strftime("%Y-%m-%d %H:%M:%S +0000 %a", gmtime(lstat($link)->mtime));
         my $version =
             -e "$link/nixos-version"
             ? readFile("$link/nixos-version")
