@@ -370,7 +370,7 @@ if ($grubVersion == 1) {
     if ($splashImage) {
         copy ("${splashImage}", "${bootPath}/background.xpm.gz") or die ("cannot copy ${splashImage} to ${bootPath}\n");
         #$conf .= "splashimage " . ($grubBoot->path eq "/" ? "" : $grubBoot->path) . "/background.xpm.gz\n";
-        $conf .= "splashimage " . "'(\$drive" . ($grubBootDev->path) . ")" . Cwd::abs_path("${subboot_path}" . "/background.xpm.gz") . "'" . "\n";
+        $conf .= "splashimage " . "(\$drive" . ($grubBootDev->path) . ")'" . "${subboot_path}" . "/background.xpm.gz" . "'" . "\n";
     }
 }
 
@@ -418,7 +418,7 @@ else {
             #if loadfont " . ($grubBoot->path eq "/" ? "" : $grubBoot->path) . "/converted-font.pf2; then
         $conf .= "
             insmod font
-            if loadfont " . "'(\$drive" . ($grubBootDev->path) . ")" . Cwd::abs_path("${subboot_path}" . "/converted-font.pf2") . "'" . "; then
+            if loadfont " . "(\$drive" . ($grubBootDev->path) . ")'" . "${subboot_path}" . "/converted-font.pf2" . "'" . "; then
               insmod gfxterm
               if [ \"\${grub_platform}\" = \"efi\" ]; then
                 set gfxmode=$gfxmodeEfi
@@ -448,7 +448,7 @@ else {
             #if background_image --mode '$splashMode' " . ($grubBoot->path eq "/" ? "" : $grubBoot->path) . "/background$suffix; then
         $conf .= "
             insmod " . substr($suffix, 1) . "
-            if background_image --mode '$splashMode' " . "'(\$drive" . ($grubBootDev->path) . ")" . Cwd::abs_path("${subboot_path}" . "/background$suffix") . "'" . "; then
+            if background_image --mode '$splashMode' " . "(\$drive" . ($grubBootDev->path) . ")'" . "${subboot_path}" . "/background$suffix" . "'" . "; then
               set color_normal=white/black
               set color_highlight=black/white
             else
@@ -542,20 +542,24 @@ sub addEntry
 		if (${copyKernels} != 0) # if true
 		{
 			#if (!
-			copyKernel ("${path}", "${bootPath}"); # this dies when fails/false
+			copyKernel ("${path}", "${bootPath}"); # now, this dies when fails/false
 			#)
 			#{
 			#	die "error::copy::\"${path}\"->\"${bootPath}\"";
 			#}
 			
-			$kernel = "(\$drive" . ($grubBootDev->path) . ")" . "${subboot_path}" . Cwd::abs_path("${path}/kernel");
-			$initrd = "(\$drive" . ($grubBootDev->path) . ")" . "${subboot_path}" . Cwd::abs_path("${path}/initrd");
+			$kernel = "(\$drive" . ($grubBootDev->path) . ")'" . "${subboot_path}" . Cwd::abs_path("${path}/kernel") . "'";
+			#$kernel = "(\$drive" . ($grubBootDev->path) . ")'" . Cwd::abs_path("${subboot_path}" . "/${path}/kernel") . "'";
+			$initrd = "(\$drive" . ($grubBootDev->path) . ")'" . "${subboot_path}" . Cwd::abs_path("${path}/initrd") . "'";
+			#$initrd = "(\$drive" . ($grubBootDev->path) . ")'" . Cwd::abs_path("${subboot_path}" . "/${path}/initrd") . "'";
 		}
 		else
 		{
-			$kernel = "(\$drive" . ($grubStoreDev->path) . ")" . "${subroot_path}" . Cwd::abs_path("${path}/kernel");
+			$kernel = "(\$drive" . ($grubStoreDev->path) . ")'" . "${subroot_path}" . Cwd::abs_path("${path}/kernel") . "'";
+			#$kernel = "(\$drive" . ($grubStoreDev->path) . ")'" . Cwd::abs_path("${subroot_path}" . "/${path}/kernel") . "'";
 			
-			$initrd = "(\$drive" . ($grubStoreDev->path) . ")" . "${subroot_path}" . Cwd::abs_path("${path}/initrd");
+			$initrd = "(\$drive" . ($grubStoreDev->path) . ")'" . "${subroot_path}" . Cwd::abs_path("${path}/initrd") . "'";
+			#$initrd = "(\$drive" . ($grubStoreDev->path) . ")'" . Cwd::abs_path("${subroot_path}" . "/${path}/initrd") . "'";
 			
 			#$kernel = "(\$drive${grubStoreDev->path})" . "${subroot_path}" . Cwd::abs_path("${path}/kernel");
 			#my $initrd = copyToKernelsDir("${subroot_path}" . Cwd::abs_path("${path}/initrd"));
@@ -658,7 +662,7 @@ addEntry("NixOS - Default", "${defaultConfig}");
 
 $conf .= "$extraEntries\n" unless $extraEntriesBeforeNixOS;
 
-my $grubBootPath = "'(\$drive" . ($grubBootDev->path) . ")" . Cwd::abs_path("/${subboot_path}") . "'";
+my $grubBootPath = "(\$drive" . ($grubBootDev->path) . ")'" . "${subboot_path}" . "'";
 # extraEntries could refer to @bootRoot@, which we have to substitute
 $conf =~ s/\@bootRoot\@/$grubBootPath/g;
 

@@ -83,6 +83,7 @@
 			}
 		#}
 		
+		# Fallback entry:
 		menuentry "150. NixOS 18.09.2574.a7e559a5504 (2019-08-19 04:25:22 -0400 Mon)" {
 			search --set=drive1 --fs-uuid f3f9b214-f0df-44fe-83c5-87bab913d99b
 			

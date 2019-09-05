@@ -15,7 +15,7 @@
 	{
 		type = lib.types.string;
 		default = "";
-		example = "/mach/nixos/root";
+		example = "/mach/nixos";
 		description = ''Absolute directory path relative to the root volume/partition to mount as the actual root / for the resulting running system. Also look at subboot.*. This is useful if, for example, the root filesystem of the OS is present in a subdirectory on its volume/partition.'';
 	};
 	
@@ -27,7 +27,7 @@
 		default = "/boot";
 		example = "/mach/nixos/boot";
 		#description = "Subdirectory path on the boot volume for the boot loader to read from as /boot during system startup and to write to as /boot during boot loader setup.";
-		description = ''Absolute directory path relative to the boot volume/partition for the boot loader to read boot files from, as /boot/, during system startup; AKA: subdirectory on the boot partition where /boot is directly (/boot/ itself, not its parent directory) located. If /boot/ is located on the same volume/partition as root /, then this would/should have the same value as subroot.path; it would be different otherwise.'';
+		description = ''Absolute directory path, relative to the boot volume/partition root, used by the boot loader to read boot files from, during system startup; AKA: subdirectory on the boot partition where /boot is directly (/boot/ itself, not its parent directory) located.'';
 		#description = "Subdirectory path on the boot volume where boot/ is present for the boot loader to read from during system startup. This is [also] useful when /boot is hosted on another partition/volume. Note that boot/ is the conventional example, but this subroot.boot path would be expected to have the same subdirectory structure as on the running system, most particularly boot/. In the example here, it would be /mach/nixos/boot/boot/.";
 	};
 	
